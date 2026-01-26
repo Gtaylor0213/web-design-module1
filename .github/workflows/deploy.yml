@@ -1,0 +1,60 @@
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        env:
+          REPO: ${{ github.repository }}
+        run: |
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << EOF
+            # Load environment
+            export PATH=\$PATH:/usr/local/go/bin
+            export NVM_DIR="\$HOME/.nvm"
+            [ -s "\$NVM_DIR/nvm.sh" ] && . "\$NVM_DIR/nvm.sh"
+
+            # Create app directory if it doesn't exist
+            mkdir -p ~/app
+            cd ~/app
+
+            # Clone or pull latest code
+            if [ -d ".git" ]; then
+              git pull origin main
+            else
+              git clone https://github.com/${REPO}.git .
+            fi
+
+            # Build and run backend
+            cd backend
+            /usr/local/go/bin/go build -o server .
+
+            # Stop existing server if running
+            pkill -f "./server" || true
+
+            # Start server in background
+            nohup ./server > server.log 2>&1 &
+
+            # Build frontend
+            cd ../frontend
+            npm install
+            npm run build
+
+            echo "Deployment complete!"
+          EOF
