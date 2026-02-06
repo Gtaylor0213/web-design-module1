@@ -1,76 +1,92 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
+
+	_ "github.com/go-sql-driver/mysql"
+	"jones-county-xc/db"
 )
 
+var queries *db.Queries
+
 func main() {
-	http.HandleFunc("/api/health", healthHandler)
-	http.HandleFunc("/api/hello", helloHandler)
-	http.HandleFunc("/api/athletes", athletesHandler)
-	http.HandleFunc("/api/meets", meetsHandler)
-	http.HandleFunc("/api/results", resultsHandler)
+	conn, err := sql.Open("mysql", "xcapp:xcpass@tcp(127.0.0.1:3306)/jones_county_xc?parseTime=true")
+	if err != nil {
+		log.Fatal("Failed to connect to database:", err)
+	}
+	defer conn.Close()
+
+	if err := conn.Ping(); err != nil {
+		log.Fatal("Failed to ping database:", err)
+	}
+
+	queries = db.New(conn)
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("GET /api/health", healthHandler)
+	mux.HandleFunc("GET /api/hello", helloHandler)
+	mux.HandleFunc("GET /api/athletes", athletesHandler)
+	mux.HandleFunc("GET /api/athletes/{id}", athleteByIDHandler)
+	mux.HandleFunc("GET /api/meets", meetsHandler)
+	mux.HandleFunc("GET /api/meets/{id}/results", meetResultsHandler)
 
 	log.Println("Backend server starting on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
 	}
 }
 
-type Athlete struct {
-	Name           string `json:"name"`
-	Grade          int    `json:"grade"`
-	PersonalRecord string `json:"personalRecord"`
-}
-
 func athletesHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	athletes := []Athlete{
-		{Name: "Jake Miller", Grade: 11, PersonalRecord: "16:42"},
-		{Name: "Sarah Thompson", Grade: 10, PersonalRecord: "19:15"},
-		{Name: "Marcus Davis", Grade: 12, PersonalRecord: "16:08"},
-		{Name: "Emily Chen", Grade: 9, PersonalRecord: "20:31"},
-		{Name: "Tyler Brooks", Grade: 11, PersonalRecord: "17:05"},
+	athletes, err := queries.GetAllAthletes(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(athletes)
 }
 
-type Meet struct {
-	ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Date     string `json:"date"`
-	Location string `json:"location"`
+func athleteByIDHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.Error(w, "invalid athlete id", http.StatusBadRequest)
+		return
+	}
+	athlete, err := queries.GetAthleteByID(r.Context(), int32(id))
+	if err != nil {
+		http.Error(w, "athlete not found", http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(athlete)
 }
 
 func meetsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	meets := []Meet{
-		{ID: 1, Name: "Jones County Invitational", Date: "2026-03-14", Location: "Jones County Park"},
-		{ID: 2, Name: "Region 4 Championship", Date: "2026-03-28", Location: "Cedar Creek Trails"},
-		{ID: 3, Name: "State Qualifying Meet", Date: "2026-04-11", Location: "Riverside Complex"},
+	meets, err := queries.GetAllMeets(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(meets)
 }
 
-type Result struct {
-	ID        int    `json:"id"`
-	AthleteID int    `json:"athleteId"`
-	MeetID    int    `json:"meetId"`
-	Time      string `json:"time"`
-	Place     int    `json:"place"`
-}
-
-func resultsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	results := []Result{
-		{ID: 1, AthleteID: 1, MeetID: 1, Time: "17:02", Place: 3},
-		{ID: 2, AthleteID: 2, MeetID: 1, Time: "19:45", Place: 8},
-		{ID: 3, AthleteID: 3, MeetID: 1, Time: "16:15", Place: 1},
-		{ID: 4, AthleteID: 4, MeetID: 1, Time: "21:03", Place: 12},
-		{ID: 5, AthleteID: 5, MeetID: 1, Time: "17:22", Place: 5},
+func meetResultsHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.Error(w, "invalid meet id", http.StatusBadRequest)
+		return
 	}
+	results, err := queries.GetMeetResults(r.Context(), int32(id))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(results)
 }
 
