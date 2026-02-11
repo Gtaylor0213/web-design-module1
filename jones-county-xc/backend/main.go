@@ -3,8 +3,10 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -14,7 +16,14 @@ import (
 var queries *db.Queries
 
 func main() {
-	conn, err := sql.Open("mysql", "xcapp:xcpass@tcp(127.0.0.1:3306)/jones_county_xc?parseTime=true")
+	dbUser := getEnv("DB_USER", "xcapp")
+	dbPass := getEnv("DB_PASS", "xcpass")
+	dbHost := getEnv("DB_HOST", "127.0.0.1")
+	dbPort := getEnv("DB_PORT", "3306")
+	dbName := getEnv("DB_NAME", "jones_county_xc")
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
+
+	conn, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
@@ -98,4 +107,11 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"message": "Hello from Jones County XC API"})
+}
+
+func getEnv(key, fallback string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+	return fallback
 }

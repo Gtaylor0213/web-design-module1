@@ -9,6 +9,7 @@ build/
 .env
 .env.local
 .env.*.local
+.env.production
 
 # IDE
 .idea/
@@ -26,3 +27,4 @@ npm-debug.log*
 
 # Go
 backend/backend
+**/server

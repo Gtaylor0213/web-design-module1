@@ -1,0 +1,19 @@
+[Unit]
+Description=Jones County XC Backend
+After=network.target mysql.service
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=/home/ubuntu/server
+Environment=DB_USER=xcapp
+Environment=DB_PASS=JonesXC2026!secure
+Environment=DB_HOST=127.0.0.1
+Environment=DB_PORT=3306
+Environment=DB_NAME=jones_county_xc
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

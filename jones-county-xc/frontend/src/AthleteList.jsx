@@ -26,10 +26,10 @@ function AthleteList() {
         </thead>
         <tbody>
           {athletes.map((a) => (
-            <tr key={a.name} className="border-t">
-              <td className="px-4 py-2">{a.name}</td>
-              <td className="px-4 py-2">{a.grade}</td>
-              <td className="px-4 py-2">{a.personalRecord}</td>
+            <tr key={a.Name} className="border-t">
+              <td className="px-4 py-2">{a.Name}</td>
+              <td className="px-4 py-2">{a.Grade}</td>
+              <td className="px-4 py-2">{a.PersonalRecord}</td>
             </tr>
           ))}
         </tbody>
