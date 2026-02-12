@@ -61,5 +61,20 @@ jobs:
             sudo rm -rf /var/www/jones-county-xc/*
             sudo cp -r dist/* /var/www/jones-county-xc/
 
+            # Diagnostics
+            echo "=== Backend status ==="
+            sudo systemctl status xc-backend --no-pager || true
+            echo "=== Backend logs ==="
+            sudo journalctl -u xc-backend -n 20 --no-pager || true
+            echo "=== Nginx config ==="
+            ls -la /etc/nginx/sites-enabled/
+            cat /etc/nginx/sites-enabled/* || true
+            echo "=== Port 8080 ==="
+            sudo ss -tlnp | grep 8080 || echo "Nothing on port 8080"
+            echo "=== Frontend files ==="
+            ls /var/www/jones-county-xc/ || true
+            echo "=== curl localhost API ==="
+            curl -s http://127.0.0.1:8080/api/athletes || echo "Backend not responding"
+
             echo "Deployment complete!"
           EOF
