@@ -44,15 +44,16 @@ jobs:
               git clone https://github.com/${REPO}.git .
             fi
 
+            # Stop backend before replacing binary
+            sudo systemctl stop xc-backend || true
+            sudo fuser -k 8080/tcp || true
+
             # Build backend and copy to where systemd expects it
             cd jones-county-xc/backend
             /usr/local/go/bin/go build -o server .
             cp server ~/server
 
-            # Kill any stale server process and restart via systemd
-            sudo systemctl stop xc-backend || true
-            sudo fuser -k 8080/tcp || true
-            sleep 1
+            # Start backend
             sudo systemctl start xc-backend
 
             # Build frontend
