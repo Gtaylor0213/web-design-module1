@@ -49,8 +49,11 @@ jobs:
             /usr/local/go/bin/go build -o server .
             cp server ~/server
 
-            # Restart backend via systemd
-            sudo systemctl restart xc-backend
+            # Kill any stale server process and restart via systemd
+            sudo systemctl stop xc-backend || true
+            sudo fuser -k 8080/tcp || true
+            sleep 1
+            sudo systemctl start xc-backend
 
             # Build frontend
             cd ../frontend
