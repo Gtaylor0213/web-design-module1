@@ -25,6 +25,8 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << EOF
+            set -e
+
             # Load environment
             export PATH=\$PATH:/usr/local/go/bin
             export NVM_DIR="\$HOME/.nvm"
@@ -34,9 +36,10 @@ jobs:
             mkdir -p ~/app
             cd ~/app
 
-            # Clone or pull latest code
+            # Clone or update to latest code
             if [ -d ".git" ]; then
-              git pull origin main
+              git fetch origin main
+              git reset --hard origin/main
             else
               git clone https://github.com/${REPO}.git .
             fi
