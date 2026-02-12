@@ -41,20 +41,22 @@ jobs:
               git clone https://github.com/${REPO}.git .
             fi
 
-            # Build and run backend
-            cd backend
+            # Build backend and copy to where systemd expects it
+            cd jones-county-xc/backend
             /usr/local/go/bin/go build -o server .
+            cp server ~/server
 
-            # Stop existing server if running
-            pkill -f "./server" || true
-
-            # Start server in background
-            nohup ./server > server.log 2>&1 &
+            # Restart backend via systemd
+            sudo systemctl restart xc-backend
 
             # Build frontend
             cd ../frontend
             npm install
             npm run build
+
+            # Clean old files and deploy to nginx root
+            sudo rm -rf /var/www/jones-county-xc/*
+            sudo cp -r dist/* /var/www/jones-county-xc/
 
             echo "Deployment complete!"
           EOF
