@@ -22,6 +22,7 @@ function App() {
               {/* Subtle radial glow behind text */}
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(34,197,94,0.15)_0%,_transparent_70%)]" aria-hidden="true" />
               <div className="relative">
+                <img src="/jc-logo.png" alt="Jones County Greyhounds logo" className="w-24 h-24 mx-auto mb-4" />
                 <p className="text-sm font-semibold tracking-[0.3em] uppercase text-green-400 mb-4">
                   Home of the Greyhounds
                 </p>

@@ -48,9 +48,12 @@ function Sidebar({ activeTab, onTabChange }) {
         } md:translate-x-0`}
       >
         {/* Logo / Brand */}
-        <div className="p-6 border-b border-green-700">
-          <h2 className="font-extrabold text-xl tracking-wider uppercase">JCXC</h2>
-          <p className="text-xs text-green-300 mt-1 tracking-wide">Jones County Cross Country</p>
+        <div className="p-6 border-b border-green-700 flex items-center gap-3">
+          <img src="/jc-logo.png" alt="Jones County logo" className="w-12 h-12" />
+          <div>
+            <h2 className="font-extrabold text-xl tracking-wider uppercase">JCXC</h2>
+            <p className="text-xs text-green-300 mt-1 tracking-wide">Jones County Cross Country</p>
+          </div>
         </div>
 
         {/* Close button - mobile only */}
