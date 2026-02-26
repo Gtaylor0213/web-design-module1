@@ -39,9 +39,6 @@ function App() {
             <div className="w-full max-w-4xl mx-auto px-4 mb-6">
               <h1 className="text-3xl font-extrabold text-gray-900 uppercase tracking-tight">Athletes</h1>
             </div>
-            <div className="w-full max-w-4xl mx-auto px-4 flex justify-start mb-2">
-              <RaceCategorySelect value={raceCategory} onChange={setRaceCategory} />
-            </div>
             <AthleteList />
           </div>
         )}
@@ -59,6 +56,9 @@ function App() {
           <div className="py-10">
             <div className="w-full max-w-4xl mx-auto px-4 mb-2">
               <h1 className="text-3xl font-extrabold text-gray-900 uppercase tracking-tight">Results</h1>
+            </div>
+            <div className="w-full max-w-4xl mx-auto px-4 mt-4 mb-2">
+              <RaceCategorySelect value={raceCategory} onChange={setRaceCategory} />
             </div>
             <MeetResults meetId={1} meetName="Jones County Invitational" />
           </div>
