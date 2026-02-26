@@ -11,9 +11,9 @@ function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <nav className="bg-green-950 text-white">
-      <div className="max-w-4xl mx-auto px-4 flex items-center justify-between h-12">
-        <span className="font-bold text-sm tracking-wide">JCXC</span>
+    <nav className="bg-green-900 text-white shadow-md">
+      <div className="max-w-5xl mx-auto px-4 flex items-center justify-between h-14">
+        <span className="font-extrabold text-lg tracking-wider uppercase">JCXC</span>
 
         {/* Desktop links */}
         <ul className="hidden md:flex gap-6">
@@ -21,7 +21,7 @@ function Navbar() {
             <li key={link.label}>
               <a
                 href={link.href}
-                className="text-sm text-green-200 hover:text-white transition-colors"
+                className="text-sm font-medium uppercase tracking-wide text-green-200 hover:text-white transition-colors"
               >
                 {link.label}
               </a>
@@ -49,7 +49,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <ul className="md:hidden border-t border-green-800 px-4 pb-3">
+        <ul className="md:hidden border-t border-green-700 px-4 pb-3 pt-1">
           {links.map((link) => (
             <li key={link.label}>
               <a

@@ -15,22 +15,22 @@ function MeetResults({ meetId, meetName }) {
   if (!results || results.length === 0) return <p className="text-gray-500 mt-4">No results yet.</p>
 
   return (
-    <div className="mt-8 w-full max-w-2xl mx-auto">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Results — {meetName}</h2>
-      <table className="w-full bg-white shadow rounded overflow-hidden">
-        <thead className="bg-gray-200">
+    <div className="mt-8 w-full max-w-4xl mx-auto px-4">
+      <h2 className="text-2xl font-bold text-gray-900 mb-5">Results — {meetName}</h2>
+      <table className="w-full bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <thead className="bg-green-600 text-white">
           <tr>
-            <th className="text-left px-4 py-2">Place</th>
-            <th className="text-left px-4 py-2">Athlete</th>
-            <th className="text-left px-4 py-2">Time</th>
+            <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Place</th>
+            <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Athlete</th>
+            <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Time</th>
           </tr>
         </thead>
         <tbody>
           {results.map((r) => (
-            <tr key={r.ID} className="border-t">
-              <td className="px-4 py-2">{r.Place}</td>
-              <td className="px-4 py-2">{r.AthleteName}</td>
-              <td className="px-4 py-2">{r.Time}</td>
+            <tr key={r.ID} className="border-t border-gray-100 hover:bg-green-50/50 transition-colors">
+              <td className="px-4 py-3 text-sm">{r.Place}</td>
+              <td className="px-4 py-3 text-sm">{r.AthleteName}</td>
+              <td className="px-4 py-3 text-sm">{r.Time}</td>
             </tr>
           ))}
         </tbody>

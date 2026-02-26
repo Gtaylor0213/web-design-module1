@@ -9,7 +9,7 @@ import {
 function RaceCategorySelect({ value, onChange }) {
   return (
     <div className="w-full max-w-xs">
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-sm font-semibold text-gray-900 mb-1">
         Race Category
       </label>
       <Select value={value} onValueChange={onChange}>

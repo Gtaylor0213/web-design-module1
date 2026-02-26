@@ -10,19 +10,19 @@ function App() {
   const [raceCategory, setRaceCategory] = useState("")
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="bg-gradient-to-r from-green-900 to-green-700 text-white py-10 px-4 text-center shadow-md">
-        <h1 className="text-4xl font-bold tracking-tight mb-2">
-          <span className="text-green-300">Jones County</span>{" "}
-          <span className="text-yellow-400">Cross Country</span>
+      <div className="bg-gradient-to-br from-green-900 via-green-800 to-green-700 text-white py-14 px-4 text-center shadow-lg">
+        <h1 className="text-5xl font-extrabold tracking-tight mb-2 uppercase">
+          <span className="text-white">Jones County</span>{" "}
+          <span className="text-green-300">Cross Country</span>
         </h1>
-        <p className="text-lg text-green-200">
+        <p className="text-lg font-medium text-green-200 tracking-wide">
           Home of the Greyhounds
         </p>
         <TodayDate />
       </div>
-      <div className="text-center py-8">
+      <div className="py-10">
         <UpcomingMeets />
         <div className="mt-8 w-full max-w-4xl mx-auto px-4 flex justify-start">
           <RaceCategorySelect value={raceCategory} onChange={setRaceCategory} />
