@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import AthleteCard from "./AthleteCard"
 
 function AthleteList() {
   const { data: athletes, isLoading, error } = useQuery({
@@ -14,26 +15,13 @@ function AthleteList() {
   if (error) return <p className="text-red-600 mt-8">Error: {error.message}</p>
 
   return (
-    <div className="mt-8 w-full max-w-2xl mx-auto">
+    <div className="mt-8 w-full max-w-4xl mx-auto px-4">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Athletes</h2>
-      <table className="w-full bg-white shadow rounded overflow-hidden">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="text-left px-4 py-2">Name</th>
-            <th className="text-left px-4 py-2">Grade</th>
-            <th className="text-left px-4 py-2">PR</th>
-          </tr>
-        </thead>
-        <tbody>
-          {athletes.map((a) => (
-            <tr key={a.Name} className="border-t">
-              <td className="px-4 py-2">{a.Name}</td>
-              <td className="px-4 py-2">{a.Grade}</td>
-              <td className="px-4 py-2">{a.PersonalRecord}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {athletes.map((a) => (
+          <AthleteCard key={a.Name} name={a.Name} grade={a.Grade} time={a.PersonalRecord} />
+        ))}
+      </div>
     </div>
   )
 }
