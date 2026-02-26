@@ -1,6 +1,8 @@
+import { Button } from "@/components/ui/button"
+
 function AthleteCard({ name, grade, time }) {
   return (
-    <div className="bg-white border-2 border-gray-200 rounded-lg p-5 text-left hover:shadow-xl hover:border-green-500 hover:scale-105 hover:bg-green-50 transition-all cursor-pointer">
+    <div className="bg-white border-2 border-gray-200 rounded-lg p-5 text-left hover:shadow-xl hover:border-green-500 hover:scale-105 hover:bg-green-50 transition-all">
       <h3 className="text-lg font-bold text-gray-800">{name}</h3>
       <p className="text-sm text-gray-500 mt-1">Grade {grade}</p>
       <p className="text-sm text-green-700 font-medium mt-1 flex items-center gap-1.5">
@@ -9,6 +11,13 @@ function AthleteCard({ name, grade, time }) {
         </svg>
         PR: {time}
       </p>
+      <Button
+        variant="outline"
+        className="mt-3 w-full cursor-pointer"
+        onClick={() => alert(`Details for ${name} coming soon!`)}
+      >
+        View Details
+      </Button>
     </div>
   )
 }
