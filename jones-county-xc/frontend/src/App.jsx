@@ -18,15 +18,21 @@ function App() {
       <main className="md:ml-64 min-h-screen">
         {activeTab === "home" && (
           <>
-            <div className="bg-gradient-to-br from-green-900 via-green-800 to-green-700 text-white py-14 px-4 text-center shadow-lg">
-              <h1 className="text-5xl font-extrabold tracking-tight mb-2 uppercase">
-                <span className="text-white">Jones County</span>{" "}
-                <span className="text-yellow-400">Cross Country</span>
-              </h1>
-              <p className="text-lg font-medium text-green-200 tracking-wide">
-                Home of the Greyhounds
-              </p>
-              <TodayDate />
+            <div className="relative bg-gradient-to-br from-green-950 via-green-900 to-green-800 text-white py-24 px-6 text-center shadow-xl overflow-hidden">
+              {/* Subtle radial glow behind text */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(34,197,94,0.15)_0%,_transparent_70%)]" />
+              <div className="relative">
+                <p className="text-sm font-semibold tracking-[0.3em] uppercase text-green-400 mb-4">
+                  Home of the Greyhounds
+                </p>
+                <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight mb-3 uppercase leading-tight">
+                  <span className="text-white">Jones County</span>
+                  <br />
+                  <span className="text-yellow-400">Cross Country</span>
+                </h1>
+                <div className="w-20 h-1 bg-yellow-400 mx-auto mt-6 mb-5 rounded-full" />
+                <TodayDate />
+              </div>
             </div>
             <div className="py-10">
               <UpcomingMeets />
