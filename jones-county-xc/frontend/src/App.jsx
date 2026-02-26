@@ -4,12 +4,14 @@ import MeetResults from "./MeetResults"
 import TodayDate from "./TodayDate"
 import UpcomingMeets from "./UpcomingMeets"
 import RaceCategorySelect from "./RaceCategorySelect"
+import Navbar from "./Navbar"
 
 function App() {
   const [raceCategory, setRaceCategory] = useState("")
 
   return (
     <div className="min-h-screen bg-gray-100">
+      <Navbar />
       <div className="bg-gradient-to-r from-green-900 to-green-700 text-white py-10 px-4 text-center shadow-md">
         <h1 className="text-4xl font-bold tracking-tight mb-2">
           <span className="text-green-300">Jones County</span>{" "}
