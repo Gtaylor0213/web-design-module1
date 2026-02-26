@@ -1,7 +1,7 @@
 import AthleteList from "./AthleteList"
-import MeetList from "./MeetList"
 import MeetResults from "./MeetResults"
 import TodayDate from "./TodayDate"
+import UpcomingMeets from "./UpcomingMeets"
 
 function App() {
   return (
@@ -17,8 +17,8 @@ function App() {
         <TodayDate />
       </div>
       <div className="text-center py-8">
+        <UpcomingMeets />
         <AthleteList />
-        <MeetList />
         <MeetResults meetId={1} meetName="Jones County Invitational" />
       </div>
     </div>
