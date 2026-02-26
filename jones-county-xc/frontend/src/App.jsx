@@ -1,17 +1,20 @@
 import AthleteList from "./AthleteList"
 import MeetList from "./MeetList"
 import MeetResults from "./MeetResults"
+import TodayDate from "./TodayDate"
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-10 px-4 text-center shadow-md">
+      <div className="bg-gradient-to-r from-green-900 to-green-700 text-white py-10 px-4 text-center shadow-md">
         <h1 className="text-4xl font-bold tracking-tight mb-2">
-          Jones County Cross Country
+          <span className="text-green-300">Jones County</span>{" "}
+          <span className="text-yellow-400">Cross Country</span>
         </h1>
-        <p className="text-lg text-blue-200">
+        <p className="text-lg text-green-200">
           Home of the Greyhounds
         </p>
+        <TodayDate />
       </div>
       <div className="text-center py-8">
         <AthleteList />
