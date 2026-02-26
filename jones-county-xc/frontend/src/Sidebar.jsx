@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const navItems = [
   { id: "home", label: "Home" },
@@ -10,6 +10,15 @@ const navItems = [
 function Sidebar({ activeTab, onTabChange }) {
   const [open, setOpen] = useState(false)
 
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape" && open) setOpen(false)
+    }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [open])
+
   return (
     <>
       {/* Mobile hamburger button */}
@@ -18,7 +27,7 @@ function Sidebar({ activeTab, onTabChange }) {
         className="md:hidden fixed top-4 left-4 z-50 bg-green-900 text-white p-2 rounded-lg shadow-lg cursor-pointer"
         aria-label="Open menu"
       >
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-6 h-6" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
@@ -33,6 +42,7 @@ function Sidebar({ activeTab, onTabChange }) {
 
       {/* Sidebar */}
       <aside
+        aria-label="Main navigation"
         className={`fixed top-0 left-0 h-full w-64 bg-green-900 text-white z-50 transform transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`}
@@ -49,16 +59,18 @@ function Sidebar({ activeTab, onTabChange }) {
           className="md:hidden absolute top-4 right-4 text-green-200 hover:text-white cursor-pointer"
           aria-label="Close menu"
         >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-6 h-6" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
 
         {/* Navigation */}
-        <nav className="mt-4">
+        <nav className="mt-4" role="tablist" aria-label="Site sections">
           {navItems.map((item) => (
             <button
               key={item.id}
+              role="tab"
+              aria-selected={activeTab === item.id}
               onClick={() => {
                 onTabChange(item.id)
                 setOpen(false)

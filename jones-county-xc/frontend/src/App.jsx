@@ -20,7 +20,7 @@ function App() {
           <>
             <div className="relative bg-gradient-to-br from-green-950 via-green-900 to-green-800 text-white py-24 px-6 text-center shadow-xl overflow-hidden">
               {/* Subtle radial glow behind text */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(34,197,94,0.15)_0%,_transparent_70%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(34,197,94,0.15)_0%,_transparent_70%)]" aria-hidden="true" />
               <div className="relative">
                 <p className="text-sm font-semibold tracking-[0.3em] uppercase text-green-400 mb-4">
                   Home of the Greyhounds
@@ -30,12 +30,16 @@ function App() {
                   <br />
                   <span className="text-yellow-400">Cross Country</span>
                 </h1>
-                <div className="w-20 h-1 bg-yellow-400 mx-auto mt-6 mb-5 rounded-full" />
+                <div className="w-20 h-1 bg-yellow-400 mx-auto mt-6 mb-5 rounded-full" aria-hidden="true" />
                 <TodayDate />
               </div>
             </div>
-            <div className="py-10">
-              <UpcomingMeets />
+            <div className="w-full max-w-4xl mx-auto px-4 mt-10 pb-10">
+              <img
+                src="/team-photo.png"
+                alt="Jones County Cross Country team posing with trophies"
+                className="w-full rounded-xl shadow-lg"
+              />
             </div>
           </>
         )}

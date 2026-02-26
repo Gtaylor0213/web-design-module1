@@ -6,7 +6,7 @@ function AthleteCard({ name, grade, time }) {
       <h3 className="text-lg font-bold text-gray-900">{name}</h3>
       <p className="text-sm text-gray-500 mt-1">Grade {grade}</p>
       <p className="text-sm text-green-600 font-semibold mt-1 flex items-center gap-1.5">
-        <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-4 h-4 shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         PR: {time}

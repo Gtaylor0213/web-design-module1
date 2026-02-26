@@ -11,8 +11,8 @@ function AthleteList() {
     },
   })
 
-  if (isLoading) return <p className="text-gray-500 mt-8">Loading athletes...</p>
-  if (error) return <p className="text-red-600 mt-8">Error: {error.message}</p>
+  if (isLoading) return <p className="text-gray-500 mt-8" role="status">Loading athletes...</p>
+  if (error) return <p className="text-red-600 mt-8" role="alert">Error: {error.message}</p>
 
   return (
     <div className="mt-8 w-full max-w-4xl mx-auto px-4">

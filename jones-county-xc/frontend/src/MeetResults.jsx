@@ -10,14 +10,15 @@ function MeetResults({ meetId, meetName }) {
     },
   })
 
-  if (isLoading) return <p className="text-gray-500 mt-4">Loading results...</p>
-  if (error) return <p className="text-red-600 mt-4">Error: {error.message}</p>
+  if (isLoading) return <p className="text-gray-500 mt-4" role="status">Loading results...</p>
+  if (error) return <p className="text-red-600 mt-4" role="alert">Error: {error.message}</p>
   if (!results || results.length === 0) return <p className="text-gray-500 mt-4">No results yet.</p>
 
   return (
     <div className="mt-8 w-full max-w-4xl mx-auto px-4">
       <h2 className="text-2xl font-bold text-gray-900 mb-5">Results — {meetName}</h2>
       <table className="w-full bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <caption className="sr-only">Race results for {meetName}</caption>
         <thead className="bg-green-600 text-white">
           <tr>
             <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Place</th>

@@ -9,11 +9,11 @@ import {
 function RaceCategorySelect({ value, onChange }) {
   return (
     <div className="w-full max-w-xs">
-      <label className="block text-sm font-semibold text-gray-900 mb-1">
+      <label htmlFor="race-category" className="block text-sm font-semibold text-gray-900 mb-1">
         Race Category
       </label>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-full cursor-pointer">
+        <SelectTrigger id="race-category" className="w-full cursor-pointer">
           <SelectValue placeholder="Select a category" />
         </SelectTrigger>
         <SelectContent>
