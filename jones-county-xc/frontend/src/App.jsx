@@ -3,6 +3,7 @@ import AthleteList from "./AthleteList"
 import MeetResults from "./MeetResults"
 import TodayDate from "./TodayDate"
 import UpcomingMeets from "./UpcomingMeets"
+import AllMeets from "./AllMeets"
 import RaceCategorySelect from "./RaceCategorySelect"
 import Sidebar from "./Sidebar"
 
@@ -35,12 +36,15 @@ function App() {
                 <TodayDate />
               </div>
             </div>
-            <div className="w-full max-w-4xl mx-auto px-4 mt-10 pb-10">
+            <div className="w-full max-w-4xl mx-auto px-4 mt-10">
               <img
                 src="/team-photo.png"
                 alt="Jones County Cross Country team posing with trophies"
                 className="w-full rounded-xl shadow-lg"
               />
+            </div>
+            <div className="pb-10">
+              <UpcomingMeets />
             </div>
           </>
         )}
@@ -59,7 +63,7 @@ function App() {
             <div className="w-full max-w-4xl mx-auto px-4 mb-2">
               <h1 className="text-3xl font-extrabold text-gray-900 uppercase tracking-tight">Meets</h1>
             </div>
-            <UpcomingMeets />
+            <AllMeets />
           </div>
         )}
 

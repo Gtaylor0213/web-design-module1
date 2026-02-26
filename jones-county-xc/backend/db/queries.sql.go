@@ -159,3 +159,36 @@ func (q *Queries) GetMeetResults(ctx context.Context, meetID int32) ([]GetMeetRe
 	}
 	return items, nil
 }
+
+const getUpcomingMeets = `-- name: GetUpcomingMeets :many
+SELECT id, name, date, location, description FROM meets WHERE date >= CURDATE() ORDER BY date
+`
+
+func (q *Queries) GetUpcomingMeets(ctx context.Context) ([]Meet, error) {
+	rows, err := q.db.QueryContext(ctx, getUpcomingMeets)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Meet
+	for rows.Next() {
+		var i Meet
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Date,
+			&i.Location,
+			&i.Description,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

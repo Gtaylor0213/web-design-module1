@@ -41,6 +41,7 @@ func main() {
 	mux.HandleFunc("GET /api/athletes", athletesHandler)
 	mux.HandleFunc("GET /api/athletes/{id}", athleteByIDHandler)
 	mux.HandleFunc("GET /api/meets", meetsHandler)
+	mux.HandleFunc("GET /api/meets/upcoming", upcomingMeetsHandler)
 	mux.HandleFunc("GET /api/meets/{id}/results", meetResultsHandler)
 
 	log.Println("Backend server starting on :8080")
@@ -76,6 +77,16 @@ func athleteByIDHandler(w http.ResponseWriter, r *http.Request) {
 
 func meetsHandler(w http.ResponseWriter, r *http.Request) {
 	meets, err := queries.GetAllMeets(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(meets)
+}
+
+func upcomingMeetsHandler(w http.ResponseWriter, r *http.Request) {
+	meets, err := queries.GetUpcomingMeets(r.Context())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
