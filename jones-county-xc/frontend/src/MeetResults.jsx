@@ -20,13 +20,17 @@ function MeetResults({ meetId, meetName }) {
           <div className="bg-green-600 px-4 py-3 flex gap-8">
             <Skeleton className="h-4 w-12 bg-green-500" />
             <Skeleton className="h-4 w-20 bg-green-500" />
+            <Skeleton className="h-4 w-10 bg-green-500" />
+            <Skeleton className="h-4 w-14 bg-green-500" />
             <Skeleton className="h-4 w-12 bg-green-500" />
           </div>
           {[...Array(5)].map((_, i) => (
             <div key={i} className="px-4 py-3 flex gap-8 border-t border-gray-100">
               <Skeleton className="h-4 w-8" />
               <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-4 w-10" />
               <Skeleton className="h-4 w-14" />
+              <Skeleton className="h-4 w-12" />
             </div>
           ))}
         </div>
@@ -52,6 +56,8 @@ function MeetResults({ meetId, meetName }) {
           <tr>
             <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Place</th>
             <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Athlete</th>
+            <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Grade</th>
+            <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Event</th>
             <th className="text-left px-4 py-3 text-sm font-semibold tracking-wide uppercase">Time</th>
           </tr>
         </thead>
@@ -60,6 +66,8 @@ function MeetResults({ meetId, meetName }) {
             <tr key={r.ID} className="border-t border-gray-100 hover:bg-green-50/50 transition-colors">
               <td className="px-4 py-3 text-sm">{r.Place}</td>
               <td className="px-4 py-3 text-sm">{r.AthleteName}</td>
+              <td className="px-4 py-3 text-sm">{r.AthleteGrade}</td>
+              <td className="px-4 py-3 text-sm">{r.Event}</td>
               <td className="px-4 py-3 text-sm">{r.Time}</td>
             </tr>
           ))}

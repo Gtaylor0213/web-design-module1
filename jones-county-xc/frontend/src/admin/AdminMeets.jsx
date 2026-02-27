@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -52,9 +53,13 @@ function AdminMeets() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allMeets"] })
       queryClient.invalidateQueries({ queryKey: ["upcomingMeets"] })
+      toast.success(editing ? "Meet updated" : "Meet added")
       closeDialog()
     },
-    onError: (err) => setError(err.message),
+    onError: (err) => {
+      setError(err.message)
+      toast.error(err.message)
+    },
   })
 
   const deleteMutation = useMutation({
@@ -69,10 +74,14 @@ function AdminMeets() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["allMeets"] })
       queryClient.invalidateQueries({ queryKey: ["upcomingMeets"] })
+      toast.success("Meet deleted")
       setDeleteDialogOpen(false)
       setDeleting(null)
     },
-    onError: (err) => setError(err.message),
+    onError: (err) => {
+      setError(err.message)
+      toast.error(err.message)
+    },
   })
 
   function openAdd() {

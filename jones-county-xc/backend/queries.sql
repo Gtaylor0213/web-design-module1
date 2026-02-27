@@ -11,14 +11,14 @@ SELECT id, name, date, location, description FROM meets ORDER BY date;
 SELECT id, name, date, location, description FROM meets WHERE date >= CURDATE() ORDER BY date;
 
 -- name: GetMeetResults :many
-SELECT r.id, r.athlete_id, r.meet_id, r.time, r.place, a.name AS athlete_name
+SELECT r.id, r.athlete_id, r.meet_id, r.event, r.time, r.place, a.name AS athlete_name, a.grade AS athlete_grade
 FROM results r
 JOIN athletes a ON a.id = r.athlete_id
 WHERE r.meet_id = ?
 ORDER BY r.place;
 
 -- name: CreateResult :execresult
-INSERT INTO results (athlete_id, meet_id, time, place) VALUES (?, ?, ?, ?);
+INSERT INTO results (athlete_id, meet_id, event, time, place) VALUES (?, ?, ?, ?, ?);
 
 -- name: CreateAthlete :execresult
 INSERT INTO athletes (name, grade, personal_record, events) VALUES (?, ?, ?, ?);
@@ -42,7 +42,7 @@ UPDATE meets SET name = ?, date = ?, location = ?, description = ? WHERE id = ?;
 DELETE FROM meets WHERE id = ?;
 
 -- name: UpdateResult :exec
-UPDATE results SET athlete_id = ?, meet_id = ?, time = ?, place = ? WHERE id = ?;
+UPDATE results SET athlete_id = ?, meet_id = ?, event = ?, time = ?, place = ? WHERE id = ?;
 
 -- name: DeleteResult :exec
 DELETE FROM results WHERE id = ?;

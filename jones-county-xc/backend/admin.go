@@ -221,6 +221,7 @@ func createResultHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		AthleteID int32  `json:"AthleteID"`
 		MeetID    int32  `json:"MeetID"`
+		Event     string `json:"Event"`
 		Time      string `json:"Time"`
 		Place     int32  `json:"Place"`
 	}
@@ -232,6 +233,7 @@ func createResultHandler(w http.ResponseWriter, r *http.Request) {
 	_, err := queries.CreateResult(r.Context(), db.CreateResultParams{
 		AthleteID: req.AthleteID,
 		MeetID:    req.MeetID,
+		Event:     req.Event,
 		Time:      req.Time,
 		Place:     req.Place,
 	})
@@ -255,6 +257,7 @@ func updateResultHandler(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		AthleteID int32  `json:"AthleteID"`
 		MeetID    int32  `json:"MeetID"`
+		Event     string `json:"Event"`
 		Time      string `json:"Time"`
 		Place     int32  `json:"Place"`
 	}
@@ -267,6 +270,7 @@ func updateResultHandler(w http.ResponseWriter, r *http.Request) {
 		ID:        int32(id),
 		AthleteID: req.AthleteID,
 		MeetID:    req.MeetID,
+		Event:     req.Event,
 		Time:      req.Time,
 		Place:     req.Place,
 	}); err != nil {

@@ -28,6 +28,7 @@ type Result struct {
 	ID        int32
 	AthleteID int32
 	MeetID    int32
+	Event     string
 	Time      string
 	Place     int32
 }

@@ -21,6 +21,7 @@ CREATE TABLE results (
     id INT AUTO_INCREMENT PRIMARY KEY,
     athlete_id INT NOT NULL,
     meet_id INT NOT NULL,
+    event VARCHAR(50) NOT NULL,
     time VARCHAR(10) NOT NULL,
     place INT NOT NULL,
     FOREIGN KEY (athlete_id) REFERENCES athletes(id),
@@ -39,9 +40,9 @@ INSERT INTO meets (name, date, location, description) VALUES
     ('Region 4 Championship', '2026-03-28', 'Cedar Creek Trails', 'Regional championship to qualify for state'),
     ('State Qualifying Meet', '2026-04-11', 'Riverside Complex', 'Final qualifying meet before state competition');
 
-INSERT INTO results (athlete_id, meet_id, time, place) VALUES
-    (1, 1, '17:02', 3),
-    (2, 1, '19:45', 8),
-    (3, 1, '16:15', 1),
-    (4, 1, '21:03', 12),
-    (5, 1, '17:22', 5);
+INSERT INTO results (athlete_id, meet_id, event, time, place) VALUES
+    (1, 1, '5K', '17:02', 3),
+    (2, 1, '5K', '19:45', 8),
+    (3, 1, '5K', '16:15', 1),
+    (4, 1, '5K', '21:03', 12),
+    (5, 1, '5K', '17:22', 5);

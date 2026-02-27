@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,7 +14,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 
-const emptyResult = { AthleteID: "", MeetID: "", Time: "", Place: "" }
+const emptyResult = { AthleteID: "", MeetID: "", Event: "", Time: "", Place: "" }
 
 function AdminResults() {
   const queryClient = useQueryClient()
@@ -64,6 +65,7 @@ function AdminResults() {
         body: JSON.stringify({
           AthleteID: parseInt(data.AthleteID, 10),
           MeetID: parseInt(data.MeetID, 10),
+          Event: data.Event,
           Time: data.Time,
           Place: parseInt(data.Place, 10),
         }),
@@ -76,9 +78,13 @@ function AdminResults() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["meetResults", selectedMeetId] })
+      toast.success(editing ? "Result updated" : "Result added")
       closeDialog()
     },
-    onError: (err) => setError(err.message),
+    onError: (err) => {
+      setError(err.message)
+      toast.error(err.message)
+    },
   })
 
   const deleteMutation = useMutation({
@@ -92,10 +98,14 @@ function AdminResults() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["meetResults", selectedMeetId] })
+      toast.success("Result deleted")
       setDeleteDialogOpen(false)
       setDeleting(null)
     },
-    onError: (err) => setError(err.message),
+    onError: (err) => {
+      setError(err.message)
+      toast.error(err.message)
+    },
   })
 
   function openAdd() {
@@ -110,6 +120,7 @@ function AdminResults() {
     setForm({
       AthleteID: String(result.AthleteID),
       MeetID: String(result.MeetID),
+      Event: result.Event,
       Time: result.Time,
       Place: String(result.Place),
     })
@@ -181,6 +192,8 @@ function AdminResults() {
               <tr>
                 <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Place</th>
                 <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Athlete</th>
+                <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Grade</th>
+                <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Event</th>
                 <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Time</th>
                 <th className="text-right px-4 py-3 text-sm font-semibold text-gray-700">Actions</th>
               </tr>
@@ -191,6 +204,8 @@ function AdminResults() {
                   <tr key={r.ID} className="border-t border-gray-100 hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3 text-sm">{r.Place}</td>
                     <td className="px-4 py-3 text-sm">{r.AthleteName}</td>
+                    <td className="px-4 py-3 text-sm">{r.AthleteGrade}</td>
+                    <td className="px-4 py-3 text-sm">{r.Event}</td>
                     <td className="px-4 py-3 text-sm">{r.Time}</td>
                     <td className="px-4 py-3 text-sm text-right">
                       <Button variant="ghost" size="sm" onClick={() => openEdit(r)} className="cursor-pointer mr-1">
@@ -204,7 +219,7 @@ function AdminResults() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="px-4 py-6 text-center text-gray-500">No results for this meet.</td>
+                  <td colSpan={6} className="px-4 py-6 text-center text-gray-500">No results for this meet.</td>
                 </tr>
               )}
             </tbody>
@@ -236,6 +251,17 @@ function AdminResults() {
                   <option key={a.ID} value={a.ID}>{a.Name}</option>
                 ))}
               </select>
+            </div>
+            <div>
+              <Label htmlFor="result-event">Event</Label>
+              <Input
+                id="result-event"
+                value={form.Event}
+                onChange={(e) => setForm({ ...form, Event: e.target.value })}
+                placeholder="e.g. 5K, 1600m"
+                required
+                className="mt-1"
+              />
             </div>
             <div>
               <Label htmlFor="result-place">Place</Label>

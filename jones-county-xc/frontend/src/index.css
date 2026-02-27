@@ -124,6 +124,13 @@
     }
 }
 
+/* Sidebar-aware main content margin */
+@media (min-width: 768px) {
+  main[style*="--sidebar-w"] {
+    margin-left: var(--sidebar-w);
+  }
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

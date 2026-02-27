@@ -13,14 +13,24 @@ import { useAuth } from "@/hooks/useAuth"
 function App() {
   const [activeTab, setActiveTab] = useState("home")
   const [raceCategory, setRaceCategory] = useState("")
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const { isAuthenticated } = useAuth()
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} isAuthenticated={isAuthenticated} />
+      <Sidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        isAuthenticated={isAuthenticated}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+      />
 
       {/* Main content - offset by sidebar width on desktop */}
-      <main className="md:ml-64 min-h-screen">
+      <main
+        className="min-h-screen transition-[margin] duration-300 ease-in-out"
+        style={{ "--sidebar-w": sidebarCollapsed ? "4rem" : "16rem" }}
+      >
         {activeTab === "home" && (
           <>
             <div className="relative bg-gradient-to-br from-green-950 via-green-900 to-green-800 text-white py-24 px-6 text-center shadow-xl overflow-hidden">

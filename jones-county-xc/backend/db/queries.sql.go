@@ -52,12 +52,13 @@ func (q *Queries) CreateMeet(ctx context.Context, arg CreateMeetParams) (sql.Res
 }
 
 const createResult = `-- name: CreateResult :execresult
-INSERT INTO results (athlete_id, meet_id, time, place) VALUES (?, ?, ?, ?)
+INSERT INTO results (athlete_id, meet_id, event, time, place) VALUES (?, ?, ?, ?, ?)
 `
 
 type CreateResultParams struct {
 	AthleteID int32
 	MeetID    int32
+	Event     string
 	Time      string
 	Place     int32
 }
@@ -66,6 +67,7 @@ func (q *Queries) CreateResult(ctx context.Context, arg CreateResultParams) (sql
 	return q.db.ExecContext(ctx, createResult,
 		arg.AthleteID,
 		arg.MeetID,
+		arg.Event,
 		arg.Time,
 		arg.Place,
 	)
@@ -199,7 +201,7 @@ func (q *Queries) GetMeetByID(ctx context.Context, id int32) (Meet, error) {
 }
 
 const getMeetResults = `-- name: GetMeetResults :many
-SELECT r.id, r.athlete_id, r.meet_id, r.time, r.place, a.name AS athlete_name
+SELECT r.id, r.athlete_id, r.meet_id, r.event, r.time, r.place, a.name AS athlete_name, a.grade AS athlete_grade
 FROM results r
 JOIN athletes a ON a.id = r.athlete_id
 WHERE r.meet_id = ?
@@ -207,12 +209,14 @@ ORDER BY r.place
 `
 
 type GetMeetResultsRow struct {
-	ID          int32
-	AthleteID   int32
-	MeetID      int32
-	Time        string
-	Place       int32
-	AthleteName string
+	ID           int32
+	AthleteID    int32
+	MeetID       int32
+	Event        string
+	Time         string
+	Place        int32
+	AthleteName  string
+	AthleteGrade int32
 }
 
 func (q *Queries) GetMeetResults(ctx context.Context, meetID int32) ([]GetMeetResultsRow, error) {
@@ -228,9 +232,11 @@ func (q *Queries) GetMeetResults(ctx context.Context, meetID int32) ([]GetMeetRe
 			&i.ID,
 			&i.AthleteID,
 			&i.MeetID,
+			&i.Event,
 			&i.Time,
 			&i.Place,
 			&i.AthleteName,
+			&i.AthleteGrade,
 		); err != nil {
 			return nil, err
 		}
@@ -325,12 +331,13 @@ func (q *Queries) UpdateMeet(ctx context.Context, arg UpdateMeetParams) error {
 }
 
 const updateResult = `-- name: UpdateResult :exec
-UPDATE results SET athlete_id = ?, meet_id = ?, time = ?, place = ? WHERE id = ?
+UPDATE results SET athlete_id = ?, meet_id = ?, event = ?, time = ?, place = ? WHERE id = ?
 `
 
 type UpdateResultParams struct {
 	AthleteID int32
 	MeetID    int32
+	Event     string
 	Time      string
 	Place     int32
 	ID        int32
@@ -340,6 +347,7 @@ func (q *Queries) UpdateResult(ctx context.Context, arg UpdateResultParams) erro
 	_, err := q.db.ExecContext(ctx, updateResult,
 		arg.AthleteID,
 		arg.MeetID,
+		arg.Event,
 		arg.Time,
 		arg.Place,
 		arg.ID,
