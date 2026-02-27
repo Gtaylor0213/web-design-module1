@@ -124,10 +124,10 @@
     }
 }
 
-/* Sidebar-aware main content margin */
-@media (min-width: 768px) {
-  main[style*="--sidebar-w"] {
-    margin-left: var(--sidebar-w);
+/* Zero out sidebar margin on mobile */
+@media (max-width: 767.98px) {
+  main[data-sidebar] {
+    margin-left: 0 !important;
   }
 }
 

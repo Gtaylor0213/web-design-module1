@@ -56,13 +56,12 @@ function Sidebar({ activeTab, onTabChange, isAuthenticated, collapsed, onToggleC
           style={{ width: collapsed ? "4rem" : "16rem" }}
         >
           {/* Logo / Brand */}
-          <div className={`border-b border-green-700 flex items-center shrink-0 ${collapsed ? "p-3 justify-center" : "p-6 gap-3"}`}>
+          <div className={`border-b border-green-700 flex items-center shrink-0 ${collapsed ? "p-3 justify-center" : "p-5 gap-3"}`}>
             <img src="/jc-logo.png" alt="Jones County logo" className={`shrink-0 ${collapsed ? "w-10 h-10" : "w-12 h-12"}`} />
             {!collapsed && (
-              <div className="min-w-0">
-                <h2 className="font-extrabold text-xl tracking-wider uppercase">JCXC</h2>
-                <p className="text-xs text-green-300 mt-1 tracking-wide whitespace-nowrap">Jones County Cross Country</p>
-              </div>
+              <h2 className="font-extrabold text-lg tracking-wide uppercase leading-tight whitespace-nowrap">
+                Jones County<br />Cross Country
+              </h2>
             )}
           </div>
 
@@ -129,12 +128,11 @@ function Sidebar({ activeTab, onTabChange, isAuthenticated, collapsed, onToggleC
         {/* Mobile sidebar content (always expanded) */}
         <div className="md:hidden flex flex-col h-full w-64">
           {/* Logo / Brand */}
-          <div className="p-6 border-b border-green-700 flex items-center gap-3">
+          <div className="p-5 border-b border-green-700 flex items-center gap-3">
             <img src="/jc-logo.png" alt="Jones County logo" className="w-12 h-12" />
-            <div>
-              <h2 className="font-extrabold text-xl tracking-wider uppercase">JCXC</h2>
-              <p className="text-xs text-green-300 mt-1 tracking-wide">Jones County Cross Country</p>
-            </div>
+            <h2 className="font-extrabold text-lg tracking-wide uppercase leading-tight">
+              Jones County<br />Cross Country
+            </h2>
           </div>
 
           {/* Close button */}

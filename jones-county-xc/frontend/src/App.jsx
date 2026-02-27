@@ -28,8 +28,9 @@ function App() {
 
       {/* Main content - offset by sidebar width on desktop */}
       <main
-        className="min-h-screen transition-[margin] duration-300 ease-in-out"
-        style={{ "--sidebar-w": sidebarCollapsed ? "4rem" : "16rem" }}
+        data-sidebar
+        className="min-h-screen transition-[margin-left] duration-300 ease-in-out"
+        style={{ marginLeft: sidebarCollapsed ? "4rem" : "16rem" }}
       >
         {activeTab === "home" && (
           <>
