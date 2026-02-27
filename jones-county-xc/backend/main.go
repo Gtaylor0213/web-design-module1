@@ -43,6 +43,7 @@ func main() {
 	mux.HandleFunc("GET /api/meets", meetsHandler)
 	mux.HandleFunc("GET /api/meets/upcoming", upcomingMeetsHandler)
 	mux.HandleFunc("GET /api/meets/{id}/results", meetResultsHandler)
+	mux.HandleFunc("GET /api/athletes/{id}/results", athleteResultsHandler)
 
 	// Auth
 	mux.HandleFunc("POST /api/login", loginHandler)
@@ -122,6 +123,21 @@ func meetResultsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	results, err := queries.GetMeetResults(r.Context(), int32(id))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
+}
+
+func athleteResultsHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		http.Error(w, "invalid athlete id", http.StatusBadRequest)
+		return
+	}
+	results, err := queries.GetAthleteResults(r.Context(), int32(id))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

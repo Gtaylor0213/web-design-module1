@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 
-function AthleteCard({ name, grade, time }) {
+function AthleteCard({ name, grade, time, events, onViewDetails }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-5 text-left hover:shadow-lg hover:border-green-400 hover:scale-[1.02] transition-all">
       <h3 className="text-lg font-bold text-gray-900">{name}</h3>
@@ -11,10 +11,13 @@ function AthleteCard({ name, grade, time }) {
         </svg>
         PR: {time}
       </p>
+      {events && (
+        <p className="text-sm text-gray-500 mt-1">Events: {events}</p>
+      )}
       <Button
         variant="default"
         className="mt-3 w-full cursor-pointer"
-        onClick={() => alert(`Details for ${name} coming soon!`)}
+        onClick={onViewDetails}
       >
         View Details
       </Button>

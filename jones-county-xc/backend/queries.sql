@@ -46,3 +46,10 @@ UPDATE results SET athlete_id = ?, meet_id = ?, event = ?, time = ?, place = ? W
 
 -- name: DeleteResult :exec
 DELETE FROM results WHERE id = ?;
+
+-- name: GetAthleteResults :many
+SELECT r.id, r.event, r.time, r.place, m.name AS meet_name, m.date AS meet_date
+FROM results r
+JOIN meets m ON m.id = r.meet_id
+WHERE r.athlete_id = ?
+ORDER BY m.date DESC;
