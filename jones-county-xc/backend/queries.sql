@@ -19,3 +19,30 @@ ORDER BY r.place;
 
 -- name: CreateResult :execresult
 INSERT INTO results (athlete_id, meet_id, time, place) VALUES (?, ?, ?, ?);
+
+-- name: CreateAthlete :execresult
+INSERT INTO athletes (name, grade, personal_record, events) VALUES (?, ?, ?, ?);
+
+-- name: UpdateAthlete :exec
+UPDATE athletes SET name = ?, grade = ?, personal_record = ?, events = ? WHERE id = ?;
+
+-- name: DeleteAthlete :exec
+DELETE FROM athletes WHERE id = ?;
+
+-- name: GetMeetByID :one
+SELECT id, name, date, location, description FROM meets WHERE id = ?;
+
+-- name: CreateMeet :execresult
+INSERT INTO meets (name, date, location, description) VALUES (?, ?, ?, ?);
+
+-- name: UpdateMeet :exec
+UPDATE meets SET name = ?, date = ?, location = ?, description = ? WHERE id = ?;
+
+-- name: DeleteMeet :exec
+DELETE FROM meets WHERE id = ?;
+
+-- name: UpdateResult :exec
+UPDATE results SET athlete_id = ?, meet_id = ?, time = ?, place = ? WHERE id = ?;
+
+-- name: DeleteResult :exec
+DELETE FROM results WHERE id = ?;

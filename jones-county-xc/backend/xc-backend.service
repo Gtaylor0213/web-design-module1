@@ -12,6 +12,8 @@ Environment=DB_PASS=JonesXC2026!secure
 Environment=DB_HOST=127.0.0.1
 Environment=DB_PORT=3306
 Environment=DB_NAME=jones_county_xc
+Environment=ADMIN_USER=admin
+Environment=ADMIN_PASS=$2a$10$LKZIZhJzsgkGJRCQRAPw9uUYt4JMn3GaAPGC1Up8nNVr0CdkRJuCi
 Restart=always
 RestartSec=5
 

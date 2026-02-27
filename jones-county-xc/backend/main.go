@@ -44,6 +44,26 @@ func main() {
 	mux.HandleFunc("GET /api/meets/upcoming", upcomingMeetsHandler)
 	mux.HandleFunc("GET /api/meets/{id}/results", meetResultsHandler)
 
+	// Auth
+	mux.HandleFunc("POST /api/login", loginHandler)
+	mux.HandleFunc("POST /api/logout", logoutHandler)
+	mux.HandleFunc("GET /api/auth/check", authCheckHandler)
+
+	// Admin - Athletes
+	mux.HandleFunc("POST /api/admin/athletes", requireAuth(createAthleteHandler))
+	mux.HandleFunc("PUT /api/admin/athletes/{id}", requireAuth(updateAthleteHandler))
+	mux.HandleFunc("DELETE /api/admin/athletes/{id}", requireAuth(deleteAthleteHandler))
+
+	// Admin - Meets
+	mux.HandleFunc("POST /api/admin/meets", requireAuth(createMeetHandler))
+	mux.HandleFunc("PUT /api/admin/meets/{id}", requireAuth(updateMeetHandler))
+	mux.HandleFunc("DELETE /api/admin/meets/{id}", requireAuth(deleteMeetHandler))
+
+	// Admin - Results
+	mux.HandleFunc("POST /api/admin/results", requireAuth(createResultHandler))
+	mux.HandleFunc("PUT /api/admin/results/{id}", requireAuth(updateResultHandler))
+	mux.HandleFunc("DELETE /api/admin/results/{id}", requireAuth(deleteResultHandler))
+
 	log.Println("Backend server starting on :8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)

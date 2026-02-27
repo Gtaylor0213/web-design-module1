@@ -6,14 +6,18 @@ import UpcomingMeets from "./UpcomingMeets"
 import AllMeets from "./AllMeets"
 import RaceCategorySelect from "./RaceCategorySelect"
 import Sidebar from "./Sidebar"
+import LoginPage from "./LoginPage"
+import AdminDashboard from "./AdminDashboard"
+import { useAuth } from "@/hooks/useAuth"
 
 function App() {
   const [activeTab, setActiveTab] = useState("home")
   const [raceCategory, setRaceCategory] = useState("")
+  const { isAuthenticated } = useAuth()
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} isAuthenticated={isAuthenticated} />
 
       {/* Main content - offset by sidebar width on desktop */}
       <main className="md:ml-64 min-h-screen">
@@ -77,6 +81,22 @@ function App() {
             </div>
             <MeetResults meetId={1} meetName="Jones County Invitational" />
           </div>
+        )}
+
+        {activeTab === "login" && (
+          isAuthenticated ? (
+            <AdminDashboard onLogout={() => setActiveTab("home")} />
+          ) : (
+            <LoginPage onLoginSuccess={() => setActiveTab("admin")} />
+          )
+        )}
+
+        {activeTab === "admin" && (
+          isAuthenticated ? (
+            <AdminDashboard onLogout={() => setActiveTab("home")} />
+          ) : (
+            <LoginPage onLoginSuccess={() => setActiveTab("admin")} />
+          )
         )}
       </main>
     </div>

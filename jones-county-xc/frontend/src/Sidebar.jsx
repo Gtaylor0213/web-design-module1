@@ -7,7 +7,7 @@ const navItems = [
   { id: "results", label: "Results" },
 ]
 
-function Sidebar({ activeTab, onTabChange }) {
+function Sidebar({ activeTab, onTabChange, isAuthenticated }) {
   const [open, setOpen] = useState(false)
 
   // Close mobile menu on Escape key
@@ -88,6 +88,25 @@ function Sidebar({ activeTab, onTabChange }) {
             </button>
           ))}
         </nav>
+
+        {/* Login / Admin link at bottom */}
+        <div className="absolute bottom-0 left-0 w-full border-t border-green-700">
+          <button
+            role="tab"
+            aria-selected={activeTab === (isAuthenticated ? "admin" : "login")}
+            onClick={() => {
+              onTabChange(isAuthenticated ? "admin" : "login")
+              setOpen(false)
+            }}
+            className={`w-full text-left px-6 py-3 text-sm font-medium uppercase tracking-wide transition-colors cursor-pointer ${
+              activeTab === "admin" || activeTab === "login"
+                ? "bg-green-800 text-white border-l-4 border-yellow-400"
+                : "text-green-200 hover:bg-green-800 hover:text-white border-l-4 border-transparent"
+            }`}
+          >
+            {isAuthenticated ? "Admin" : "Login"}
+          </button>
+        </div>
       </aside>
     </>
   )
