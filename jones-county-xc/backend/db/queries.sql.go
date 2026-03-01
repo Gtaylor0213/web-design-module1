@@ -12,7 +12,7 @@ import (
 )
 
 const createAthlete = `-- name: CreateAthlete :execresult
-INSERT INTO athletes (name, grade, personal_record, events) VALUES (?, ?, ?, ?)
+INSERT INTO athletes (name, grade, personal_record, events, gender, team) VALUES (?, ?, ?, ?, ?, ?)
 `
 
 type CreateAthleteParams struct {
@@ -20,6 +20,8 @@ type CreateAthleteParams struct {
 	Grade          int32
 	PersonalRecord string
 	Events         string
+	Gender         string
+	Team           string
 }
 
 func (q *Queries) CreateAthlete(ctx context.Context, arg CreateAthleteParams) (sql.Result, error) {
@@ -28,6 +30,8 @@ func (q *Queries) CreateAthlete(ctx context.Context, arg CreateAthleteParams) (s
 		arg.Grade,
 		arg.PersonalRecord,
 		arg.Events,
+		arg.Gender,
+		arg.Team,
 	)
 }
 
@@ -101,7 +105,7 @@ func (q *Queries) DeleteResult(ctx context.Context, id int32) error {
 }
 
 const getAllAthletes = `-- name: GetAllAthletes :many
-SELECT id, name, grade, personal_record, events FROM athletes ORDER BY name
+SELECT id, name, grade, personal_record, events, gender, team FROM athletes ORDER BY name
 `
 
 func (q *Queries) GetAllAthletes(ctx context.Context) ([]Athlete, error) {
@@ -119,6 +123,8 @@ func (q *Queries) GetAllAthletes(ctx context.Context) ([]Athlete, error) {
 			&i.Grade,
 			&i.PersonalRecord,
 			&i.Events,
+			&i.Gender,
+			&i.Team,
 		); err != nil {
 			return nil, err
 		}
@@ -167,7 +173,7 @@ func (q *Queries) GetAllMeets(ctx context.Context) ([]Meet, error) {
 }
 
 const getAthleteByID = `-- name: GetAthleteByID :one
-SELECT id, name, grade, personal_record, events FROM athletes WHERE id = ?
+SELECT id, name, grade, personal_record, events, gender, team FROM athletes WHERE id = ?
 `
 
 func (q *Queries) GetAthleteByID(ctx context.Context, id int32) (Athlete, error) {
@@ -179,6 +185,8 @@ func (q *Queries) GetAthleteByID(ctx context.Context, id int32) (Athlete, error)
 		&i.Grade,
 		&i.PersonalRecord,
 		&i.Events,
+		&i.Gender,
+		&i.Team,
 	)
 	return i, err
 }
@@ -332,7 +340,7 @@ func (q *Queries) GetUpcomingMeets(ctx context.Context) ([]Meet, error) {
 }
 
 const updateAthlete = `-- name: UpdateAthlete :exec
-UPDATE athletes SET name = ?, grade = ?, personal_record = ?, events = ? WHERE id = ?
+UPDATE athletes SET name = ?, grade = ?, personal_record = ?, events = ?, gender = ?, team = ? WHERE id = ?
 `
 
 type UpdateAthleteParams struct {
@@ -340,6 +348,8 @@ type UpdateAthleteParams struct {
 	Grade          int32
 	PersonalRecord string
 	Events         string
+	Gender         string
+	Team           string
 	ID             int32
 }
 
@@ -349,6 +359,8 @@ func (q *Queries) UpdateAthlete(ctx context.Context, arg UpdateAthleteParams) er
 		arg.Grade,
 		arg.PersonalRecord,
 		arg.Events,
+		arg.Gender,
+		arg.Team,
 		arg.ID,
 	)
 	return err

@@ -6,6 +6,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -14,7 +21,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 
-const emptyAthlete = { Name: "", Grade: "", PersonalRecord: "", Events: "" }
+const emptyAthlete = { Name: "", Grade: "", PersonalRecord: "", Events: "", Gender: "", Team: "" }
 
 function AdminAthletes() {
   const queryClient = useQueryClient()
@@ -99,6 +106,8 @@ function AdminAthletes() {
       Grade: String(athlete.Grade),
       PersonalRecord: athlete.PersonalRecord,
       Events: athlete.Events,
+      Gender: athlete.Gender || "",
+      Team: athlete.Team || "",
     })
     setError("")
     setDialogOpen(true)
@@ -144,6 +153,8 @@ function AdminAthletes() {
             <tr>
               <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Name</th>
               <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Grade</th>
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Gender</th>
+              <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Team</th>
               <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">PR</th>
               <th className="text-left px-4 py-3 text-sm font-semibold text-gray-700">Events</th>
               <th className="text-right px-4 py-3 text-sm font-semibold text-gray-700">Actions</th>
@@ -155,6 +166,8 @@ function AdminAthletes() {
                 <tr key={a.ID} className="border-t border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3 text-sm">{a.Name}</td>
                   <td className="px-4 py-3 text-sm">{a.Grade}</td>
+                  <td className="px-4 py-3 text-sm">{a.Gender}</td>
+                  <td className="px-4 py-3 text-sm">{a.Team}</td>
                   <td className="px-4 py-3 text-sm">{a.PersonalRecord}</td>
                   <td className="px-4 py-3 text-sm">{a.Events}</td>
                   <td className="px-4 py-3 text-sm text-right">
@@ -169,7 +182,7 @@ function AdminAthletes() {
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="px-4 py-6 text-center text-gray-500">No athletes found.</td>
+                <td colSpan={7} className="px-4 py-6 text-center text-gray-500">No athletes found.</td>
               </tr>
             )}
           </tbody>
@@ -230,6 +243,32 @@ function AdminAthletes() {
                 required
                 className="mt-1"
               />
+            </div>
+            <div>
+              <Label htmlFor="athlete-gender">Gender</Label>
+              <Select value={form.Gender} onValueChange={(val) => setForm({ ...form, Gender: val })}>
+                <SelectTrigger id="athlete-gender" className="mt-1 w-full">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Male">Male</SelectItem>
+                  <SelectItem value="Female">Female</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="athlete-team">Team</Label>
+              <Select value={form.Team} onValueChange={(val) => setForm({ ...form, Team: val })}>
+                <SelectTrigger id="athlete-team" className="mt-1 w-full">
+                  <SelectValue placeholder="Select team" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Boys Varsity">Boys Varsity</SelectItem>
+                  <SelectItem value="Girls Varsity">Girls Varsity</SelectItem>
+                  <SelectItem value="JV Boys">JV Boys</SelectItem>
+                  <SelectItem value="JV Girls">JV Girls</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             {error && <p className="text-sm text-red-600">{error}</p>}
             <DialogFooter>

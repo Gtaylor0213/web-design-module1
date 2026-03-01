@@ -18,6 +18,8 @@ func createAthleteHandler(w http.ResponseWriter, r *http.Request) {
 		Grade          int32  `json:"Grade"`
 		PersonalRecord string `json:"PersonalRecord"`
 		Events         string `json:"Events"`
+		Gender         string `json:"Gender"`
+		Team           string `json:"Team"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, `{"error":"invalid request"}`, http.StatusBadRequest)
@@ -29,6 +31,8 @@ func createAthleteHandler(w http.ResponseWriter, r *http.Request) {
 		Grade:          req.Grade,
 		PersonalRecord: req.PersonalRecord,
 		Events:         req.Events,
+		Gender:         req.Gender,
+		Team:           req.Team,
 	})
 	if err != nil {
 		http.Error(w, `{"error":"failed to create athlete"}`, http.StatusInternalServerError)
@@ -59,6 +63,8 @@ func updateAthleteHandler(w http.ResponseWriter, r *http.Request) {
 		Grade          int32  `json:"Grade"`
 		PersonalRecord string `json:"PersonalRecord"`
 		Events         string `json:"Events"`
+		Gender         string `json:"Gender"`
+		Team           string `json:"Team"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, `{"error":"invalid request"}`, http.StatusBadRequest)
@@ -71,6 +77,8 @@ func updateAthleteHandler(w http.ResponseWriter, r *http.Request) {
 		Grade:          req.Grade,
 		PersonalRecord: req.PersonalRecord,
 		Events:         req.Events,
+		Gender:         req.Gender,
+		Team:           req.Team,
 	}); err != nil {
 		http.Error(w, `{"error":"failed to update athlete"}`, http.StatusInternalServerError)
 		return

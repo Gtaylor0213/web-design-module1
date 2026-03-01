@@ -6,7 +6,9 @@ CREATE TABLE athletes (
     name VARCHAR(100) NOT NULL,
     grade INT NOT NULL,
     personal_record VARCHAR(10) NOT NULL,
-    events VARCHAR(255) NOT NULL
+    events VARCHAR(255) NOT NULL,
+    gender VARCHAR(10) NOT NULL DEFAULT '',
+    team VARCHAR(20) NOT NULL DEFAULT ''
 );
 
 CREATE TABLE meets (
@@ -28,12 +30,12 @@ CREATE TABLE results (
     FOREIGN KEY (meet_id) REFERENCES meets(id)
 );
 
-INSERT INTO athletes (name, grade, personal_record, events) VALUES
-    ('Jake Miller', 11, '16:42', '5K, 3200m'),
-    ('Sarah Thompson', 10, '19:15', '5K, 1600m'),
-    ('Marcus Davis', 12, '16:08', '5K, 3200m'),
-    ('Emily Chen', 9, '20:31', '5K'),
-    ('Tyler Brooks', 11, '17:05', '5K, 1600m');
+INSERT INTO athletes (name, grade, personal_record, events, gender, team) VALUES
+    ('Jake Miller', 11, '16:42', '5K, 3200m', 'Male', 'Boys Varsity'),
+    ('Sarah Thompson', 10, '19:15', '5K, 1600m', 'Female', 'Girls Varsity'),
+    ('Marcus Davis', 12, '16:08', '5K, 3200m', 'Male', 'Boys Varsity'),
+    ('Emily Chen', 9, '20:31', '5K', 'Female', 'JV Girls'),
+    ('Tyler Brooks', 11, '17:05', '5K, 1600m', 'Male', 'Boys Varsity');
 
 INSERT INTO meets (name, date, location, description) VALUES
     ('Jones County Invitational', '2026-03-14', 'Jones County Park', 'Annual home invitational on our 5K course'),

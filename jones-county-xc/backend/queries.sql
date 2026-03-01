@@ -1,8 +1,8 @@
 -- name: GetAllAthletes :many
-SELECT id, name, grade, personal_record, events FROM athletes ORDER BY name;
+SELECT id, name, grade, personal_record, events, gender, team FROM athletes ORDER BY name;
 
 -- name: GetAthleteByID :one
-SELECT id, name, grade, personal_record, events FROM athletes WHERE id = ?;
+SELECT id, name, grade, personal_record, events, gender, team FROM athletes WHERE id = ?;
 
 -- name: GetAllMeets :many
 SELECT id, name, date, location, description FROM meets ORDER BY date;
@@ -21,10 +21,10 @@ ORDER BY r.place;
 INSERT INTO results (athlete_id, meet_id, event, time, place) VALUES (?, ?, ?, ?, ?);
 
 -- name: CreateAthlete :execresult
-INSERT INTO athletes (name, grade, personal_record, events) VALUES (?, ?, ?, ?);
+INSERT INTO athletes (name, grade, personal_record, events, gender, team) VALUES (?, ?, ?, ?, ?, ?);
 
 -- name: UpdateAthlete :exec
-UPDATE athletes SET name = ?, grade = ?, personal_record = ?, events = ? WHERE id = ?;
+UPDATE athletes SET name = ?, grade = ?, personal_record = ?, events = ?, gender = ?, team = ? WHERE id = ?;
 
 -- name: DeleteAthlete :exec
 DELETE FROM athletes WHERE id = ?;

@@ -14,6 +14,8 @@ type Athlete struct {
 	Grade          int32
 	PersonalRecord string
 	Events         string
+	Gender         string
+	Team           string
 }
 
 type Meet struct {

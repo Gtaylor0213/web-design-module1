@@ -1,7 +1,15 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   Dialog,
   DialogContent,
@@ -13,6 +21,9 @@ import AthleteCard from "./AthleteCard"
 
 function AthleteList() {
   const [selectedAthlete, setSelectedAthlete] = useState(null)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [teamFilter, setTeamFilter] = useState("all")
+  const [sortBy, setSortBy] = useState("name")
 
   const { data: athletes, isLoading, error, refetch } = useQuery({
     queryKey: ["athletes"],
@@ -32,6 +43,51 @@ function AthleteList() {
     },
     enabled: !!selectedAthlete,
   })
+
+  const filteredAndSorted = useMemo(() => {
+    if (!athletes) return []
+
+    let result = [...athletes]
+
+    // Filter by team
+    if (teamFilter !== "all") {
+      result = result.filter((a) => a.Team === teamFilter)
+    }
+
+    // Search across name, grade, gender, events, PR
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim()
+      result = result.filter((a) =>
+        a.Name.toLowerCase().includes(q) ||
+        String(a.Grade).includes(q) ||
+        (a.Gender && a.Gender.toLowerCase().includes(q)) ||
+        (a.Events && a.Events.toLowerCase().includes(q)) ||
+        (a.PersonalRecord && a.PersonalRecord.includes(q))
+      )
+    }
+
+    // Sort
+    result.sort((a, b) => {
+      if (sortBy === "name") {
+        const lastA = a.Name.split(" ").pop().toLowerCase()
+        const lastB = b.Name.split(" ").pop().toLowerCase()
+        return lastA.localeCompare(lastB)
+      }
+      if (sortBy === "grade") {
+        return a.Grade - b.Grade
+      }
+      if (sortBy === "pr") {
+        const toSeconds = (t) => {
+          const parts = t.split(":")
+          return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10)
+        }
+        return toSeconds(a.PersonalRecord) - toSeconds(b.PersonalRecord)
+      }
+      return 0
+    })
+
+    return result
+  }, [athletes, searchQuery, teamFilter, sortBy])
 
   if (isLoading)
     return (
@@ -62,17 +118,60 @@ function AthleteList() {
   return (
     <div className="mt-8 w-full max-w-4xl mx-auto px-4 animate-fade-in">
       <h2 className="text-2xl font-bold text-gray-900 mb-5 text-left">Athletes</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {athletes.map((a) => (
-          <AthleteCard
-            key={a.ID}
-            name={a.Name}
-            grade={a.Grade}
-            time={a.PersonalRecord}
-            events={a.Events}
-            onViewDetails={() => setSelectedAthlete(a)}
+
+      {/* Search, Filter, Sort toolbar */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-5">
+        <div className="flex-1">
+          <Input
+            placeholder="Search athletes..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full"
           />
-        ))}
+        </div>
+        <Select value={teamFilter} onValueChange={setTeamFilter}>
+          <SelectTrigger className="w-full sm:w-44 cursor-pointer">
+            <SelectValue placeholder="All Teams" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Teams</SelectItem>
+            <SelectItem value="Boys Varsity">Boys Varsity</SelectItem>
+            <SelectItem value="Girls Varsity">Girls Varsity</SelectItem>
+            <SelectItem value="JV Boys">JV Boys</SelectItem>
+            <SelectItem value="JV Girls">JV Girls</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="w-full sm:w-40 cursor-pointer">
+            <SelectValue placeholder="Sort by" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="name">Last Name</SelectItem>
+            <SelectItem value="grade">Grade</SelectItem>
+            <SelectItem value="pr">PR (fastest)</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filteredAndSorted.length > 0 ? (
+          filteredAndSorted.map((a) => (
+            <AthleteCard
+              key={a.ID}
+              name={a.Name}
+              grade={a.Grade}
+              time={a.PersonalRecord}
+              events={a.Events}
+              gender={a.Gender}
+              team={a.Team}
+              onViewDetails={() => setSelectedAthlete(a)}
+            />
+          ))
+        ) : (
+          <div className="col-span-full text-center py-8 text-gray-500">
+            No athletes match your search.
+          </div>
+        )}
       </div>
 
       {/* Athlete Detail Dialog */}
@@ -95,6 +194,14 @@ function AthleteList() {
                   <div>
                     <p className="text-xs text-gray-500 uppercase tracking-wide">Personal Record</p>
                     <p className="text-sm font-semibold text-green-600">{selectedAthlete.PersonalRecord}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Gender</p>
+                    <p className="text-sm font-semibold text-gray-900">{selectedAthlete.Gender || "N/A"}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Team</p>
+                    <p className="text-sm font-semibold text-gray-900">{selectedAthlete.Team || "N/A"}</p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-xs text-gray-500 uppercase tracking-wide">Events</p>
